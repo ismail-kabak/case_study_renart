@@ -1,5 +1,6 @@
 [
   {
+    "id":1,
     "name": "Engagement Ring 1",
     "popularityScore": 0.85,
     "weight": 2.1,
@@ -10,6 +11,7 @@
     }
   },
   {
+    "id":2,
     "name": "Engagement Ring 2",
     "popularityScore": 0.51,
     "weight": 3.4,
@@ -20,6 +22,7 @@
     }
   },
   {
+    "id":3,
     "name": "Engagement Ring 3",
     "popularityScore": 0.92,
     "weight": 3.8,
@@ -30,6 +33,7 @@
     }
   },
   {
+    "id":4,
     "name": "Engagement Ring 4",
     "popularityScore": 0.88,
     "weight": 4.5,
@@ -40,6 +44,7 @@
     }
   },
   {
+    "id":5,
     "name": "Engagement Ring 5",
     "popularityScore": 0.80,
     "weight": 2.5,
@@ -50,6 +55,7 @@
     }
   },
   {
+    "id":6,
     "name": "Engagement Ring 6",
     "popularityScore": 0.82,
     "weight": 1.8,
@@ -60,6 +66,7 @@
     }
   },
   {
+    "id":7,
     "name": "Engagement Ring 7",
     "popularityScore": 0.70,
     "weight": 5.2,
@@ -70,6 +77,7 @@
     }
   },
   {
+    "id":8,
     "name": "Engagement Ring 8",
     "popularityScore": 0.90,
     "weight": 3.7,
