@@ -27,6 +27,9 @@ Content Management System
 
 Strapi - Headless CMS for easy product management
 Admin Dashboard - User-friendly interface for content updates
+Authentication – To access the Strapi admin panel, a login token is required.
+
+📩 Note: The login token has been provided via email for security reasons. Please refer to the submission email for access details.
 
 External Integration
 
