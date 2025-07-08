@@ -142,7 +142,7 @@ app.get("/api/gold-price", async (req, res) => {
 // GET /api/products - Get all products with dynamic pricing (now from Strapi)
 app.get("/api/products", async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); // Changed this line
+    const products = await fetchProductsFromStrapi();
     const productsWithPricing = await addDynamicPricing(products);
 
     const page = parseInt(req.query.page) || 1;
@@ -188,7 +188,7 @@ app.get("/api/products", async (req, res) => {
 // GET /api/products/:id - Get single product with dynamic pricing
 app.get("/api/products/:id", async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); // Changed this line
+    const products = await fetchProductsFromStrapi(); 
     const productsWithPricing = await addDynamicPricing(products);
     const product = productsWithPricing.find(
       (p) => p.id === parseInt(req.params.id)
@@ -204,11 +204,11 @@ app.get("/api/products/:id", async (req, res) => {
   }
 });
 
-// Keep all your existing filter endpoints - just change the data source
+
 
 app.get("/api/products/filter/popular", async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); // Changed this line
+    const products = await fetchProductsFromStrapi();
     const productsWithPricing = await addDynamicPricing(products);
     const minScore = parseFloat(req.query.minScore);
 
@@ -232,7 +232,7 @@ app.get("/api/products/filter/popular", async (req, res) => {
 
 app.get('/api/products/filter/price', async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); // Changed this line
+    const products = await fetchProductsFromStrapi(); 
     const productsWithPricing = await addDynamicPricing(products);
     
     const minPrice = parseFloat(req.query.minPrice) || 0;
@@ -258,7 +258,7 @@ app.get('/api/products/filter/price', async (req, res) => {
 
 app.get('/api/products/filter/combined', async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); // Changed this line
+    const products = await fetchProductsFromStrapi(); 
     const productsWithPricing = await addDynamicPricing(products);
     
     const minPopularity = parseFloat(req.query.minPopularity) || 0;
