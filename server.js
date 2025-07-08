@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const STRAPI_URL = process.env.STRAPI_URL || "https://renart-strapi.onrender.com";
+const STRAPI_URL = "https://renart-strapi.onrender.com" || "https://renart-strapi.onrender.com";
 
 // Fallback products data (always available)
 const fallbackProducts = [
