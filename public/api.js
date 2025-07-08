@@ -9,7 +9,7 @@ class ProductAPI {
           this.baseURL = "http://localhost:3000/api";
         }
         
-        console.log('Using API base URL:', this.baseURL); // Debug log
+        console.log('Using API base URL:', this.baseURL); 
       }
 
   // Generic fetch method

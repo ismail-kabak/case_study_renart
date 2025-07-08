@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL ="https://renart-strapi.onrender.com" || "http://localhost:1337";
 
 app.use(cors());
 app.use(express.json());
