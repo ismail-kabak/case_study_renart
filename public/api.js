@@ -49,10 +49,6 @@ class ProductAPI {
     }
     return this.fetchAPI(url);
   }
-  // Search products
-  async searchProducts(query) {
-    return this.fetchAPI(`/products/search/${encodeURIComponent(query)}`);
-  }
 
   // Get popular products
   async getPopularProducts(minScore = 3.5) {
