@@ -1,0 +1,36 @@
+services:
+  # Strapi CMS
+  - type: web
+    name: renart-strapi
+    env: node
+    rootDir: strapi-cms
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: APP_KEYS
+        value: "ZiDL4TxNtLhaGY9sPAal6w==,1TKRv0NMQPmO1km+jzW9nA==,TITxUYoP83scGbTuUGWv8A==,2VF8yQeAdtfIcELPh7/Oig=="
+
+  # Node.js Backend + Frontend
+  - type: web
+    name: renart-website
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: STRAPI_URL
+        fromService:
+          type: web
+          name: renart-strapi
+          property: host
