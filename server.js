@@ -5,7 +5,99 @@ const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const STRAPI_URL ="https://renart-strapi.onrender.com" || "http://localhost:1337";
+const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
+
+// Fallback products data (always available)
+const fallbackProducts = [
+  {
+    id: 1,
+    name: "Engagement Ring 1",
+    weight: 2.1,
+    popularityScore: 0.85,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG085-100P-Y.jpg?v=1696588368",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG085-100P-R.jpg?v=1696588406",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG085-100P-W.jpg?v=1696588402"
+    }
+  },
+  {
+    id: 2,
+    name: "Engagement Ring 2",
+    weight: 3.4,
+    popularityScore: 0.51,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG012-Y.jpg?v=1707727068",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG012-R.jpg?v=1707727068",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG012-W.jpg?v=1707727068"
+    }
+  },
+  {
+    id: 3,
+    name: "Engagement Ring 3",
+    weight: 3.8,
+    popularityScore: 0.92,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG020-100P-Y.jpg?v=1683534032",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG020-100P-R.jpg?v=1683534032",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG020-100P-W.jpg?v=1683534032"
+    }
+  },
+  {
+    id: 4,
+    name: "Engagement Ring 4",
+    weight: 4.5,
+    popularityScore: 0.88,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG022-100P-Y.jpg?v=1683532153",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG022-100P-R.jpg?v=1683532153",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG022-100P-W.jpg?v=1683532153"
+    }
+  },
+  {
+    id: 5,
+    name: "Engagement Ring 5",
+    weight: 2.5,
+    popularityScore: 0.8,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG074-100P-Y.jpg?v=1696232035",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG074-100P-R.jpg?v=1696927124",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG074-100P-W.jpg?v=1696927124"
+    }
+  },
+  {
+    id: 6,
+    name: "Engagement Ring 6",
+    weight: 1.8,
+    popularityScore: 0.82,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG075-100P-Y.jpg?v=1696591786",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG075-100P-R.jpg?v=1696591802",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG075-100P-W.jpg?v=1696591798"
+    }
+  },
+  {
+    id: 7,
+    name: "Engagement Ring 7",
+    weight: 5.2,
+    popularityScore: 0.7,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG094-100P-Y.jpg?v=1696589183",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG094-100P-R.jpg?v=1696589214",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG094-100P-W.jpg?v=1696589210"
+    }
+  },
+  {
+    id: 8,
+    name: "Engagement Ring 8",
+    weight: 2.9,
+    popularityScore: 0.76,
+    images: {
+      yellow: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG098-100P-Y.jpg?v=1696589562",
+      rose: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG098-100P-R.jpg?v=1696589594",
+      white: "https://cdn.shopify.com/s/files/1/0484/1429/4167/files/EG098-100P-W.jpg?v=1696589589"
+    }
+  }
+];
 
 app.use(cors());
 app.use(express.json());
@@ -45,6 +137,7 @@ async function fetchGoldPrice() {
     return pricePerGram;
   } catch (error) {
     console.error("Error fetching gold price:", error);
+    return 106.93; // Fallback gold price
   }
 }
 
@@ -53,9 +146,10 @@ function calculatePrice(popularityScore, weight, goldPrice) {
   return Math.round(price * 100) / 100;
 }
 
-// Function to fetch products from Strapi
+// Function to fetch products from Strapi with fallback
 async function fetchProductsFromStrapi() {
   try {
+    console.log('Connecting to Strapi at:', STRAPI_URL);
     const response = await fetch(`${STRAPI_URL}/api/products?populate=*`);
     
     if (!response.ok) {
@@ -63,34 +157,41 @@ async function fetchProductsFromStrapi() {
     }
     
     const data = await response.json();
+    console.log('Strapi response data:', data);
     
-    // Transform Strapi data to match your existing format
-    return data.data.map(item => ({
-      id: item.id,
-      name: item.name,
-      weight: item.weight,
-      popularityScore: item.popularityScore,
-      images: item.images, 
-      
-    }));
+    // Check if we got products from Strapi
+    if (data.data && data.data.length > 0) {
+      console.log(`Using ${data.data.length} products from Strapi`);
+      // Transform Strapi data to match your existing format
+      return data.data.map(item => ({
+        id: item.id,
+        name: item.name,
+        weight: item.weight,
+        popularityScore: item.popularityScore,
+        images: item.images,
+      }));
+    } else {
+      console.log('No products in Strapi, using fallback products');
+      return fallbackProducts;
+    }
   } catch (error) {
     console.error("Error fetching from Strapi:", error);
-    // Fallback to JSON file if Strapi is not available
-    return await loadProductsFromFile();
+    console.log("Using fallback products");
+    // Always return fallback products if Strapi fails
+    return fallbackProducts;
   }
 }
-
 
 async function loadProductsFromFile() {
   try {
     const data = await fs.readFile(
-      path.join("/Users/Kabak/OneDrive/Masaüstü/case_study_renart", "products.json"),
+      path.join(__dirname, "products.json"),
       "utf8"
     );
     return JSON.parse(data);
   } catch (error) {
-    console.log("No products.json file found, using sample data");
-    return [];
+    console.log("No products.json file found, using fallback products");
+    return fallbackProducts;
   }
 }
 
@@ -139,7 +240,7 @@ app.get("/api/gold-price", async (req, res) => {
   }
 });
 
-// GET /api/products - Get all products with dynamic pricing (now from Strapi)
+// GET /api/products - Get all products with dynamic pricing
 app.get("/api/products", async (req, res) => {
   try {
     const products = await fetchProductsFromStrapi();
@@ -188,7 +289,7 @@ app.get("/api/products", async (req, res) => {
 // GET /api/products/:id - Get single product with dynamic pricing
 app.get("/api/products/:id", async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); 
+    const products = await fetchProductsFromStrapi();
     const productsWithPricing = await addDynamicPricing(products);
     const product = productsWithPricing.find(
       (p) => p.id === parseInt(req.params.id)
@@ -203,8 +304,6 @@ app.get("/api/products/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
 
 app.get("/api/products/filter/popular", async (req, res) => {
   try {
@@ -232,7 +331,7 @@ app.get("/api/products/filter/popular", async (req, res) => {
 
 app.get('/api/products/filter/price', async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); 
+    const products = await fetchProductsFromStrapi();
     const productsWithPricing = await addDynamicPricing(products);
     
     const minPrice = parseFloat(req.query.minPrice) || 0;
@@ -258,7 +357,7 @@ app.get('/api/products/filter/price', async (req, res) => {
 
 app.get('/api/products/filter/combined', async (req, res) => {
   try {
-    const products = await fetchProductsFromStrapi(); 
+    const products = await fetchProductsFromStrapi();
     const productsWithPricing = await addDynamicPricing(products);
     
     const minPopularity = parseFloat(req.query.minPopularity) || 0;
@@ -302,14 +401,19 @@ async function initializeServer() {
   try {
     await fetchGoldPrice();
     console.log("Gold price cache initialized");
+    
+    // Test product loading
+    const products = await fetchProductsFromStrapi();
+    console.log(`Products loaded: ${products.length} items`);
   } catch (error) {
-    console.error("Failed to initialize gold price cache:", error);
+    console.error("Failed to initialize server:", error);
   }
 }
 
 // Start server
 app.listen(PORT, async () => {
   await initializeServer();
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`Strapi CMS available at ${STRAPI_URL}/admin`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(`📊 Strapi CMS available at ${STRAPI_URL}/admin`);
+  console.log(`💎 Products: Always available (Strapi + fallback)`);
 });
