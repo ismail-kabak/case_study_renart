@@ -1,8 +1,16 @@
 // api.js - Frontend API Client
 class ProductAPI {
-  constructor(baseURL = "http://localhost:3000/api") {
-    this.baseURL = baseURL;
-  }
+    constructor() {
+        // Automatically detect if we're in development or production
+        this.baseURL = window.location.origin + "/api";
+        
+        // For development, you can override this
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          this.baseURL = "http://localhost:3000/api";
+        }
+        
+        console.log('Using API base URL:', this.baseURL); // Debug log
+      }
 
   // Generic fetch method
   async fetchAPI(endpoint, options = {}) {
