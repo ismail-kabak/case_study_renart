@@ -435,7 +435,7 @@ class ProductManager {
   showLoading() {
     const container = document.querySelector(".cards-row");
     if (container) {
-      container.innerHTML = '<div class="loading">Loading products...</div>';
+      container.innerHTML = '<div class="loading">Loading products...(Starting application services. This may take a moment on first visit. )</div>';
     }
   }
 
